@@ -1,0 +1,8 @@
+.env_dev
+db.sqlite3
+__pycache__
+venv
+media/profile_image/*
+rentor_app/migrations/*
+users/migrations/*
+/.idea/
