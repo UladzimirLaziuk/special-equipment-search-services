@@ -1,20 +1,13 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 
 
-from .views import UserProfileCreateView, RetrieveUpdateDeleteItem, SetProfileImageView
+from .views import UserProfileCreateView, RetrieveUpdateDeleteProfile, SetProfileImageView, AppLogoutView
 
-#
-# router = DefaultRouter()
-# router.register(r'', UserViewSet, basename='user')
 urlpatterns = [
-    path('api-auth/', include('rest_framework.urls')),
     path("create-profiles/", UserProfileCreateView.as_view(), name="create-profiles"),
-    path("update-destroy-profiles/", RetrieveUpdateDeleteItem.as_view(), name="update-destroy-profiles"),
+    path("update-destroy-profiles/", RetrieveUpdateDeleteProfile.as_view(), name="update-destroy-profiles"),
     path("set_image_profiles/", SetProfileImageView.as_view(), name="set_image_profiles"),
 
-
+    path('logout/', AppLogoutView.as_view(), name='app-logout'),
 
 ]
-
-
