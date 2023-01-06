@@ -34,8 +34,11 @@ def client():
 @pytest.fixture
 @pytest.mark.django_db
 def types_service():
-    obj = TypeService.objects.create(type_work='Рытье траншей')
-    return obj
+    list_name = ['Рытье траншей', 'Монтаж колодцев']
+    list_obj = [TypeService(type_work=name) for name in list_name]
+    list_obj_create = TypeService.objects.bulk_create(list_obj)
+
+    return list_obj_create
 
 
 @pytest.fixture
@@ -74,7 +77,7 @@ def data_vehicle(user):
 @pytest.fixture
 def data_vehicle_with_additional_buckets(data_vehicle):
     vehicle_additional_equipment = 'Отбойник', 'Бур'
-    vehicle_buckets = 40,
+    vehicle_buckets = 40, 35
     vehicle_buckets_list = [Buckets(width=width) for width in vehicle_buckets]
     Buckets.objects.bulk_create(vehicle_buckets_list)
 
@@ -88,8 +91,13 @@ def data_vehicle_with_additional_buckets(data_vehicle):
 
 
 @pytest.fixture
-def vehicle(data_vehicle_with_additional_buckets, data_vehicle):
-    return Vehicle.objects.create(**data_vehicle)
+def vehicle(data_vehicle):
+    obj = Vehicle.objects.create(**data_vehicle)
+    list_vehicle_buckets = Buckets.objects.values_list('id', flat=True)
+    list_additional_equipment = AdditionalEquipment.objects.values_list('id', flat=True)
+    obj.vehicle_additional_equipment.add(*list_additional_equipment)
+    obj.vehicle_buckets.add(*list_vehicle_buckets)
+    return obj
 
 
 @pytest.fixture
@@ -109,6 +117,6 @@ def ads_data(user, vehicle, types_service):
         place_work="",
         region_work="",
         delivery="",
-        types_of_services=[types_service.id, ]
+        types_of_services=TypeService.objects.values_list('id', flat=True),
     )
     return data
