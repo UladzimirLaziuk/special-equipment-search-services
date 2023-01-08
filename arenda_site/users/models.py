@@ -1,7 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from django.urls import reverse
 
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -84,6 +84,9 @@ class MyUser(AbstractUser):
         if self.username:
             return '%s. %s' % (self.username[:1], self.last_name)
         return '%s. %s' % (self.first_name[:1], self.last_name)
+
+    # def get_absolute_url(self):
+    #     return reverse('profiles-detail', args=[str(self.pk)])
 
     # def __str__(self):
     #     return '%s. %s' % (self.username[:1], self.last_name)

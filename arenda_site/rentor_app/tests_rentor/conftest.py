@@ -4,7 +4,7 @@ import pytest
 from PIL import Image
 from rest_framework.test import APIClient
 
-from rentor_app.models import Buckets, AdditionalEquipment, Vehicle, TypeService
+from rentor_app.models import Buckets, AdditionalEquipment, Vehicle, TypeService, RenterAd, PictureAdRenter
 from users import models
 from django.core.files import File
 
@@ -45,7 +45,7 @@ def types_service():
 def data_user():
     data = dict(email='test4@mail.com',
                 password='admin',
-                first_name='john',
+                first_name='John',
                 last_name='Lennon',
                 status=1)
     return data
@@ -120,3 +120,17 @@ def ads_data(user, vehicle, types_service):
         types_of_services=TypeService.objects.values_list('id', flat=True),
     )
     return data
+
+
+@pytest.fixture
+def ads_create(ads_data, img_dict, types_service):
+    ads_user_data = ads_data.copy()
+    ads_user_data['renter_ad'] = models.MyUser.objects.get(pk=ads_data['renter_ad'])
+    ads_user_data['vehicle_ad'] = Vehicle.objects.get(pk=ads_data['vehicle_ad'])
+    ads_user_data.pop('types_of_services')
+    dict_ads = {**ads_user_data}
+    ads = RenterAd.objects.create(**dict_ads)
+    list_image = [PictureAdRenter(img_ads=img, ad_link=ads) for img in img_dict]
+    if list_image:
+        PictureAdRenter.objects.bulk_create(list_image)
+    return ads

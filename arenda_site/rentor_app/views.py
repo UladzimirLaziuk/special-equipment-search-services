@@ -1,17 +1,13 @@
-from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView, DestroyAPIView, \
     RetrieveAPIView
 
 from . import models
-from .serializers import RenterAdSerializer, VehicleSerializer
+from .serializers import RenterAdSerializer, VehicleSerializer, RenterAdUpdateSerializer
 
 
 class AdRenterCreateView(CreateAPIView):
     queryset = models.RenterAd
     serializer_class = RenterAdSerializer
-
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
 
 
 class VehicleRenterCreateView(CreateAPIView):
@@ -19,8 +15,9 @@ class VehicleRenterCreateView(CreateAPIView):
     serializer_class = VehicleSerializer
 
 
-class AdRenterUpdateView(UpdateAPIView):
-    pass
+class AdRenterRetrieveUpdateView(RetrieveUpdateDestroyAPIView):
+    queryset = models.RenterAd
+    serializer_class = RenterAdUpdateSerializer
 
 
 class AdRenterDeleteView(DestroyAPIView):

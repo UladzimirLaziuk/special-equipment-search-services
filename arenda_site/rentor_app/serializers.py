@@ -70,9 +70,8 @@ class VehicleFilteredPrimaryKeyRelatedField(serializers.PrimaryKeyRelatedField):
 
 
 class RenterAdSerializer(serializers.ModelSerializer):
-    abs_url = serializers.SerializerMethodField()
+    # abs_url = serializers.SerializerMethodField()
     renter_ad = serializers.HiddenField(default=serializers.CurrentUserDefault())
-
     vehicle_ad = VehicleFilteredPrimaryKeyRelatedField(queryset=Vehicle.objects.all(), many=False)
     types_of_services = serializers.PrimaryKeyRelatedField(queryset=TypeService.objects.all(), many=True)
 
@@ -103,5 +102,17 @@ class RenterAdSerializer(serializers.ModelSerializer):
         instance.types_of_services.add(*obj_list_type_service)
         return instance
 
+
+
     def get_abs_url(self, obj):
         return obj.get_absolute_url()
+
+
+class RenterAdUpdateSerializer(serializers.ModelSerializer):
+    renter_ad = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    vehicle_ad = VehicleFilteredPrimaryKeyRelatedField(queryset=Vehicle.objects.all(), many=False, required=False)
+    types_of_services = serializers.PrimaryKeyRelatedField(queryset=TypeService.objects.all(), many=True, required=False)
+    class Meta:
+        model = RenterAd
+        fields = '__all__'
+
