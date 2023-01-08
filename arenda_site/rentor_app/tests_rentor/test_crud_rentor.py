@@ -1,6 +1,6 @@
 import pytest
 from django.urls import reverse
-from rentor_app.models import PictureAdRenter
+from rentor_app.models import PictureAdRenter, RenterAd
 
 
 @pytest.mark.django_db
@@ -37,3 +37,9 @@ def test_ads_update_put(ads_create, ads_data, auth_client, img_dict):
                                data=ads_data_put, content_type='application/json',
                                )
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_ads_destroy(ads_create, auth_client):
+    response = auth_client.delete(reverse('renter_ad_update', args=[str(ads_create.pk)]))
+    assert response.status_code == 204
