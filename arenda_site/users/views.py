@@ -38,6 +38,8 @@ class RetrieveUpdateDeleteProfile(RetrieveUpdateDestroyAPIView):
         return obj
 
 
+
+
 class SetProfileImageView(UpdateAPIView):
     permission_classes = [IsAuthenticatedAndOwner]
     queryset = MyUser.objects.all()
@@ -46,6 +48,10 @@ class SetProfileImageView(UpdateAPIView):
     def get_object(self, queryset=None):
         obj = self.request.user
         return obj
+
+    def post(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
 
 class AppLogoutView(LogoutView):
     pass

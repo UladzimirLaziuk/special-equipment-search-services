@@ -22,7 +22,6 @@ def img_file():
     return File(file_obj, name='test.png')
 
 
-
 #
 # @pytest.fixture
 # def data_file_post(img_file):
@@ -52,19 +51,24 @@ def img_file():
 #
 
 
-
-
 @pytest.mark.django_db
 def client():
     return APIClient()
 
+
+@pytest.fixture
+def auth_client(user, client):
+    client.force_login(user)
+    return client
+
+
 @pytest.fixture
 def data_user():
-    data = dict(email = 'test4@mail.com',
-    password = 'admin',
-    first_name = 'john',
-    last_name = 'Lennon',
-    status = 1)
+    data = dict(email='test4@mail.com',
+                password='admin',
+                first_name='john',
+                last_name='Lennon',
+                status=1)
     return data
 
 
