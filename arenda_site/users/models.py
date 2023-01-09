@@ -56,12 +56,12 @@ class UserManager(BaseUserManager):
 class MyUser(AbstractUser):
 
     class StatusUsers(models.TextChoices):
-        Rent = "1", "Rentor"
-        Cust = "2", "Customer"
+        Rent = "Арендатор", "Rentor"
+        Cust = "Пользователь", "Customer"
 
 
     status = models.CharField(
-        max_length=2,
+        max_length=20,
         choices=StatusUsers.choices,
         default=StatusUsers.Rent
     )
@@ -70,6 +70,7 @@ class MyUser(AbstractUser):
     phone = PhoneNumberField(blank=True)
     name_company = models.CharField(max_length=50, default='', blank=True)
     user_position = models.CharField(max_length=50, default='', blank=True)
+    password = models.CharField(max_length=255)
     username = None
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'status']

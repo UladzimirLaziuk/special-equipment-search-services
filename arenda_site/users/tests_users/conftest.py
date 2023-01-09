@@ -68,7 +68,7 @@ def data_user():
                 password='admin',
                 first_name='john',
                 last_name='Lennon',
-                status=1)
+                status='Пользователь')
     return data
 
 

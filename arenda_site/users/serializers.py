@@ -1,4 +1,6 @@
+from django.core.validators import EmailValidator
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from .models import MyUser
 
@@ -26,7 +28,17 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class ProfileImageSerializer(serializers.ModelSerializer):
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = MyUser
         fields = 'owner', 'profile_image',
 
+
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyUser
+        fields = 'email', 'password'
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'email': {'validators': [EmailValidator]},
+        }
