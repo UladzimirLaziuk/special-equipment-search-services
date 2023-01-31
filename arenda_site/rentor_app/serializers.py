@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import RenterAd, PictureAdRenter, Vehicle, Buckets, PhoneAd, AdditionalEquipment, TypeService
+from .models import RenterAd, PictureAdRenter, Vehicle, Buckets, PhoneAds, AdditionalEquipment, TypeService
 from users.models import MyUser
 
 
@@ -27,9 +27,12 @@ class RenterSerializer(serializers.ModelSerializer):
 
 class PhoneAdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PhoneAd
+        model = PhoneAds
         fields = "phone_ad_renter",
 
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return 'user_{0}/{1}'.format(instance.user.id, filename)
 
 class BucketsSerializer(serializers.ModelSerializer):
     class Meta:

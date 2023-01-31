@@ -64,9 +64,9 @@ class RenterAd(models.Model):
         return reverse('renter_ad_detail', args=[str(self.pk)])
 
 
-class PhoneAd(models.Model):
+class PhoneAds(models.Model):
     ad_renter = models.ForeignKey(RenterAd, on_delete=models.CASCADE)
-    phone_ad_renter = PhoneNumberField()
+    phone_ad_renter = models.CharField(max_length=255, blank=True, null=True)
 
 
 class PictureAdRenter(models.Model):

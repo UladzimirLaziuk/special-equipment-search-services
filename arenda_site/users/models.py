@@ -8,7 +8,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.translation import gettext_lazy as _
 
 
-
 class UserManager(BaseUserManager):
     def create_user(self, email, full_name=None, profile_picture=None, password=None, is_admin=False, is_staff=True,
                     is_active=True, first_name=None, last_name=None, status=None):
@@ -30,10 +29,11 @@ class UserManager(BaseUserManager):
         user.is_admin = is_admin
         user.is_staff = is_staff
         user.is_active = is_active
+        user.status = status
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, full_name=None, profile_picture=None, password=None, **extra_fields):
+    def create_superuser(self, email, full_name=None, profile_picture=None, password=None):
         if not email:
             raise ValueError("User must have an email")
         if not password:
@@ -54,11 +54,9 @@ class UserManager(BaseUserManager):
 
 
 class MyUser(AbstractUser):
-
     class StatusUsers(models.TextChoices):
         Rent = "Арендатор", "Rentor"
         Cust = "Пользователь", "Customer"
-
 
     status = models.CharField(
         max_length=20,
@@ -71,6 +69,7 @@ class MyUser(AbstractUser):
     name_company = models.CharField(max_length=50, default='', blank=True)
     user_position = models.CharField(max_length=50, default='', blank=True)
     password = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, blank=True)
     username = None
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'status']
@@ -86,8 +85,11 @@ class MyUser(AbstractUser):
             return '%s. %s' % (self.username[:1], self.last_name)
         return '%s. %s' % (self.first_name[:1], self.last_name)
 
-    # def get_absolute_url(self):
-    #     return reverse('profiles-detail', args=[str(self.pk)])
+    def get_img_url(self):
+        return self.profile_image.url
+
+    def get_absolute_url(self):
+        return reverse('profiles-detail', args=[str(self.pk)])
 
     # def __str__(self):
     #     return '%s. %s' % (self.username[:1], self.last_name)

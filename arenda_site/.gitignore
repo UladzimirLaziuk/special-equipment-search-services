@@ -4,5 +4,6 @@ __pycache__
 venv
 media/profile_image/*
 rentor_app/migrations/*
+tenants_app/migrations/*
 users/migrations/*
 /.idea/
