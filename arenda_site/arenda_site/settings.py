@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rentor_app',
     'rest_framework',
     'sorl.thumbnail',
+    'django_filters',
 
 ]
 
@@ -139,3 +140,10 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://127.0.0.1:6379
 CELERY_IMPORTS = ("arenda_site.tasks",)
 
 AUTH_USER_MODEL = 'users.MyUser'
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        ),
+}

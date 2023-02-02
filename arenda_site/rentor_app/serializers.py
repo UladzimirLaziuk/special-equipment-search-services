@@ -119,3 +119,8 @@ class RenterAdUpdateSerializer(serializers.ModelSerializer):
         model = RenterAd
         fields = '__all__'
 
+
+class SearchRenterAdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RenterAd
+        fields = ('id', 'price_per_hour_from', 'price_per_hour_to', 'min_work_time')

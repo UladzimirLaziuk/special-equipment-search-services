@@ -8,4 +8,5 @@ urlpatterns = [
     path('delete/', views.AdRenterDeleteView.as_view(), name='renter_ad_delete'),
     path('ad_detail/<int:pk>', views.AdRenterDetailView.as_view(), name='renter_ad_detail'),
     # path('', views.RenterAdListViews.as_view(), name='renter_ads_list'),
+    path('search/', views.SearchRenterAdListViews.as_view(), name='search_renter_ads_list'),
 ]
